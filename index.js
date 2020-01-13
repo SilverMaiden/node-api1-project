@@ -18,7 +18,7 @@ server.use(express.json());
         res.status(200).json(data)
     })
     .catch(error => {
-        console.log(error);
+        res.status(500).json({errorMessage: "The users information could not be retrieved."})
     })
 })
 
@@ -26,10 +26,14 @@ server.use(express.json());
   server.get('/api/users/:id', (req, res) => {
       data.findById(req.params.id)
       .then(data => {
-          res.status(200).json(data)
+          if (data !== undefined) {
+              res.status(200).json(data)
+          } else {
+              res.status(400).json({message: "The user with the specified ID does not exist."})
+          }
       })
       .catch(error => {
-          console.log(error);
+          res.status(500).json({errorMessage: "The user information could not be retrieved."})
       })
   })
 
