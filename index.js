@@ -50,11 +50,27 @@ server.use(express.json());
               res.status(201).send(data)
           })
           .catch(error => {
-              console.log(error);
               res.status(500).json({errorMessage: "There was an error while saving the user to the database"})
           })
 
       }
+  })
+
+  //DELETE user
+  server.delete("/api/users/:id", (req, res) => {
+      const myData = req.params;
+      data.remove(myData.id)
+      .then(data => {
+          if (data !== undefined) {
+              res.status(200).json(data);
+          } else {
+              res.status(404).json({ message: "The user with the specified ID does not exist." })
+          }
+      })
+      .catch(error => {
+          res.status(500).json( {errorMessage: "The user could not be removed" })
+      })
+
   })
 
 server.listen(port, () => {
